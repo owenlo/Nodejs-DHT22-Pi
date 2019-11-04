@@ -1,4 +1,4 @@
-# Nodejs-DHT22-sensor
+# Nodejs-DHT22-Pi
 
 Node.js express app for reading DHT22 sensor running on Raspberry Pi 3 B+. 
 

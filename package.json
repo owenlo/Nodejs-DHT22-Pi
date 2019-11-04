@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-dht22-sensor",
+  "name": "nodejs-dht22-Pi",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",

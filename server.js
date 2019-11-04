@@ -41,8 +41,8 @@ app.get('/sensor',
                 return console.error(err.message);
             }
             return row ?
-                res.send(row.id + "," + row.datetime + "," + row.temperature + "," + row.humidity) :
-                res.send("Something went wrong...!");
+                res.send({ id: row.id, datetime: row.datetime, temperature: row.temperature, humidity: row.humidity}) :
+                res.send("No result.");
 
         });
 

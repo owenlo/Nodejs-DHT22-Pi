@@ -12,3 +12,4 @@ npm-debug.log
 
 #db
 sensor.db
+sensor.db-journal

@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Temperature and Humidity</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+
+<body>
+<canvas id="dhtChart"></canvas>
+<script>
+var chartData = <%- JSON.stringify(chartdata) %>;
+var ctx = document.getElementById('dhtChart').getContext('2d');
+
+parsedData = parseChartData(chartData);
+
+var dhtChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: parsedData.datetime,
+        datasets: [{
+            label: 'Humidity %',
+            data: parsedData.humidity,
+            backgroundColor: [
+             	'rgb(54, 162, 235)'
+            ],
+            borderColor: [
+               'rgb(54, 162, 235)'
+            ],
+            borderWidth: 1
+        }, {
+            label: 'Temperature °C',
+            data: parsedData.temperature,
+            backgroundColor: [
+             	'rgb(255, 99, 132)'
+            ],
+            borderColor: [
+               'rgb(255, 99, 132)'
+            ],
+            borderWidth: 5
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    suggestedMax: 100
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontSize: 0
+                }
+            }]
+        }
+    }
+});
+
+
+function parseChartData(chartData){
+    let datetimes = [];
+    let humidities = [];
+    let temperatures = [];
+
+    for (i = 0; i < chartData.length; i++) {
+        datetimes.push(new Date(chartData[i].datetime));
+        humidities.push(chartData[i].humidity);
+        temperatures.push(chartData[i].temperature);
+    }
+
+    return { datetime : datetimes, humidity : humidities, temperature : temperatures };
+}
+</script>
+
+
+</body>
+
+</html>

@@ -5,7 +5,8 @@ const sqlite3 = require('sqlite3').verbose();
 const dbFile = './sensor.db';
 
 const app = express();
-
+app.set("view engine", "ejs"); 
+app.set("views", __dirname + "/views"); ; 
 
 let db = new sqlite3.Database(dbFile);
 const sql = `CREATE TABLE IF NOT EXISTS readings (
@@ -50,6 +51,26 @@ app.get('/sensor',
 
     });
 
+app.get('/',
+    function(req, res) {
+        db = new sqlite3.Database(dbFile);
+
+        db.all('SELECT * FROM readings', (err, row) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            return row ?
+                res.render("chart", {chartdata : row} ) :
+                res.send("No result.");
+
+        });
+
+        db.close();
+
+    });
+
 setInterval(readSensor, 900000); //15 mins in ms
+
+
 
 app.listen(port);

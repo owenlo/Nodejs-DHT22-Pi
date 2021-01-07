@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>DHT22 Temperature and Humidity Readings</title>
+	<title>DHT22 Temperature and Humidity <%= filtertype %> Reading</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 </head>
 
@@ -10,19 +10,25 @@
 <div style="width:85%; margin: auto;">
 <canvas id="dhtChart" ></canvas>
 
+<div style="float:left;">
 <form action="/">
-    <input type="submit" value="Plot 24-Hours (Default)" />
+    <input type="submit" value="Plot 1-Day" />
 </form>
+</div>
 
+<div style="float:left;">
 <form action="/">
     <input type="hidden" name="filter" value="month"/>
     <input type="submit" value="Plot 30-Days" />
 </form>
+</div>
 
+<div style="float:left;">
 <form action="/">
     <input type="hidden" name="filter" value="all"/>
     <input type="submit" value="Plot All" />
 </form>
+</div>
 
 </div>
 <script>
@@ -49,6 +55,8 @@ Array.max = function( array ){
 };
 
 var chartData = <%- JSON.stringify(chartdata) %>;
+var titleText = "DHT22 Temperature and Humidity <%- filtertype %> Reading";
+//
 var ctx = document.getElementById('dhtChart').getContext('2d');
 
 parsedData = parseChartData(chartData);
@@ -86,7 +94,7 @@ var dhtChart = new Chart(ctx, {
     options: {
         title: {
 			display: true,
-			text: 'DHT22 Temperature and Humidity Readings'
+			text: titleText
 				},
         scales: {
             yAxes: [{

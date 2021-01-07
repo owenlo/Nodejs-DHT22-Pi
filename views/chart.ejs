@@ -9,6 +9,21 @@
 <body>
 <div style="width:85%; margin: auto;">
 <canvas id="dhtChart" ></canvas>
+
+<form action="/">
+    <input type="submit" value="Plot 24-Hours (Default)" />
+</form>
+
+<form action="/">
+    <input type="hidden" name="filter" value="month"/>
+    <input type="submit" value="Plot 30-Days" />
+</form>
+
+<form action="/">
+    <input type="hidden" name="filter" value="all"/>
+    <input type="submit" value="Plot All" />
+</form>
+
 </div>
 <script>
 //Source: https://stackoverflow.com/a/25275808

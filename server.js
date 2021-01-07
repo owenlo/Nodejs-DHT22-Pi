@@ -55,18 +55,25 @@ app.get('/',
     function(req, res) {
         db = new sqlite3.Database(dbFile);
 
-        db.all('SELECT * FROM readings', (err, row) => {
+        let sqlStatement = "SELECT * FROM (SELECT * FROM readings ORDER BY id DESC LIMIT 96) sub ORDER BY id ASC"; //select last 24 hours of entries (assumes 15 min sensor read intervals)
+        
+        if(req.query.filter == "all"){
+            sqlStatement = "SELECT * FROM readings";
+        }
+
+        if(req.query.filter == "month"){
+            sqlStatement = "SELECT * FROM (SELECT * FROM readings ORDER BY id DESC LIMIT 2880) sub ORDER BY id ASC"; //select last 30 days of entries (assumes 15 min sensor read intervals)
+        }
+
+        db.all(sqlStatement, (err, row) => {
             if (err) {
                 return console.error(err.message);
             }
             return row ?
                 res.render("chart", {chartdata : row} ) :
                 res.send("No result.");
-
         });
-
         db.close();
-
     });
 
 setInterval(readSensor, 900000); //15 mins in ms

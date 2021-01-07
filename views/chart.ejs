@@ -11,55 +11,6 @@
 <canvas id="dhtChart" ></canvas>
 </div>
 <script>
-var chartData = <%- JSON.stringify(chartdata) %>;
-var ctx = document.getElementById('dhtChart').getContext('2d');
-
-parsedData = parseChartData(chartData);
-
-var dhtChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: parsedData.datetime,
-        datasets: [{
-            label: 'Humidity %',
-            data: parsedData.humidity,
-            backgroundColor: [
-             	'rgb(54, 162, 235)'
-            ],
-            borderColor: [
-               'rgb(54, 162, 235)'
-            ],
-            borderWidth: 5,
-            fill: false
-        }, {
-            label: 'Temperature °C',
-            
-            data: parsedData.temperature,
-            backgroundColor: 'rgb(255, 99, 132)',
-            type: 'bar'
-        }]
-    },
-    options: {
-        title: {
-					display: true,
-					text: 'DHT22 Temperature and Humidity Readings'
-				},
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 70
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    fontSize: 12
-                }
-            }]
-        }
-    }
-});
-
 //Source: https://stackoverflow.com/a/25275808
 function formatDate(date) {
   var hours = date.getHours();
@@ -71,6 +22,83 @@ function formatDate(date) {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear() + " " + strTime;
 }
+
+//Source: https://stackoverflow.com/a/8934895
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
+
+//Source: https://stackoverflow.com/a/8934895
+Array.max = function( array ){
+    return Math.max.apply( Math, array );
+};
+
+var chartData = <%- JSON.stringify(chartdata) %>;
+var ctx = document.getElementById('dhtChart').getContext('2d');
+
+parsedData = parseChartData(chartData);
+
+var dhtChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: parsedData.datetime,
+        datasets: [{
+            label: 'Humidity %',
+            yAxisID : "yHumid",
+            data: parsedData.humidity,
+            backgroundColor: [
+             	'rgb(54, 162, 235)'
+            ],
+            borderColor: [
+               'rgb(54, 162, 235)'
+            ],
+            borderWidth: 5,
+            fill: false
+        }, {
+            label: 'Temperature °C',
+            yAxisID : "yTemp",
+            data: parsedData.temperature,
+            backgroundColor: [ 
+                'rgb(255, 99, 132)' 
+            ],
+            borderColor: [ 
+                'rgb(255, 99, 132)' 
+            ],
+            type: 'line',
+            fill: false
+        }]
+    },
+    options: {
+        title: {
+			display: true,
+			text: 'DHT22 Temperature and Humidity Readings'
+				},
+        scales: {
+            yAxes: [{
+                id: 'yHumid',
+                type: 'linear',
+                position: 'left',
+                ticks: {
+                    max: 70,
+                    min: 0
+                }
+      }, {
+            id: 'yTemp',
+            type: 'linear',
+            position: 'right',
+            ticks: {
+                max: 30,
+                min: 0
+        }
+      }],
+            xAxes: [{
+                ticks: {
+                fontSize: 12
+                }
+            }]
+        }
+    }
+});
 
 function parseChartData(chartData){
     let datetimes = [];
@@ -85,6 +113,7 @@ function parseChartData(chartData){
 
     return { datetime : datetimes, humidity : humidities, temperature : temperatures };
 }
+
 </script>
 </body>
 </html>

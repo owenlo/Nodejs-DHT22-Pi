@@ -71,6 +71,4 @@ app.get('/',
 
 setInterval(readSensor, 900000); //15 mins in ms
 
-
-
 app.listen(port);

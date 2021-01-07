@@ -2,14 +2,17 @@
 <html>
 
 <head>
-	<title>Temperature and Humidity</title>
+	<title>DHT22 Temperature and Humidity Readings</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 </head>
 
 <body>
-<canvas id="dhtChart"></canvas>
+<div style="width:85%; margin: auto;">
+<canvas id="dhtChart" ></canvas>
+</div>
 <script>
-var chartData = <%- JSON.stringify(chartdata) %>;
+//var chartData = <%- JSON.stringify(chartdata) %>;
+var chartData = [{"id":1,"datetime":1609959725013,"temperature":20.8,"humidity":57.6},{"id":2,"datetime":1609960625014,"temperature":20.3,"humidity":58.1},{"id":3,"datetime":1609961525091,"temperature":20,"humidity":59.3},{"id":4,"datetime":1609962425183,"temperature":20,"humidity":59.1},{"id":5,"datetime":1609963325282,"temperature":19.9,"humidity":58.4},{"id":6,"datetime":1609964225384,"temperature":19.7,"humidity":60.3},{"id":7,"datetime":1609965125485,"temperature":20.2,"humidity":58.9},{"id":8,"datetime":1609966025580,"temperature":21,"humidity":58.9},{"id":9,"datetime":1609966925680,"temperature":21.6,"humidity":58.1},{"id":10,"datetime":1609967825783,"temperature":21.6,"humidity":58.1},{"id":11,"datetime":1609968725868,"temperature":21.8,"humidity":57.1},{"id":12,"datetime":1609970957422,"temperature":21.6,"humidity":57.1},{"id":13,"datetime":1609971857523,"temperature":21.4,"humidity":59.8},{"id":14,"datetime":1609972757622,"temperature":21.6,"humidity":59},{"id":15,"datetime":1609973657726,"temperature":21.8,"humidity":57.6},{"id":16,"datetime":1609974557826,"temperature":23.3,"humidity":53.8},{"id":17,"datetime":1609975457922,"temperature":25.7,"humidity":47},{"id":18,"datetime":1609976358025,"temperature":25.2,"humidity":47.4},{"id":19,"datetime":1609977258593,"temperature":22.1,"humidity":55.2},{"id":20,"datetime":1609978158231,"temperature":22,"humidity":55},{"id":21,"datetime":1609979058320,"temperature":21.8,"humidity":55.7},{"id":22,"datetime":1609979958426,"temperature":21.5,"humidity":56.4},{"id":23,"datetime":1609980858520,"temperature":21.7,"humidity":56.5},{"id":24,"datetime":1609981758620,"temperature":21.7,"humidity":57.1},{"id":25,"datetime":1609982658724,"temperature":21.5,"humidity":57},{"id":26,"datetime":1609983558821,"temperature":21.3,"humidity":55.6},{"id":27,"datetime":1609984458892,"temperature":21,"humidity":55.4},{"id":28,"datetime":1609985358990,"temperature":20.8,"humidity":55.3},{"id":29,"datetime":1609986259092,"temperature":20.5,"humidity":55.4},{"id":30,"datetime":1609987159101,"temperature":20.3,"humidity":55.4},{"id":31,"datetime":1609988059202,"temperature":20.1,"humidity":55.3},{"id":32,"datetime":1609988959291,"temperature":19.9,"humidity":55.3},{"id":33,"datetime":1609989859872,"temperature":19.5,"humidity":55},{"id":34,"datetime":1609990759971,"temperature":19.5,"humidity":54.8},{"id":35,"datetime":1609991659560,"temperature":19.4,"humidity":54.7},{"id":36,"datetime":1609992559651,"temperature":19.3,"humidity":55},{"id":37,"datetime":1609993459751,"temperature":19.2,"humidity":54.5},{"id":38,"datetime":1609994359854,"temperature":19.2,"humidity":54.3},{"id":39,"datetime":1609995259956,"temperature":19,"humidity":54.2},{"id":40,"datetime":1609996160053,"temperature":18.9,"humidity":54.2},{"id":41,"datetime":1609997060151,"temperature":18.8,"humidity":54.3},{"id":42,"datetime":1609997960711,"temperature":18.7,"humidity":54.2},{"id":43,"datetime":1609998860806,"temperature":18.7,"humidity":54.3},{"id":44,"datetime":1609999760441,"temperature":18.6,"humidity":54.1},{"id":45,"datetime":1610000660531,"temperature":18.6,"humidity":54.3},{"id":46,"datetime":1610001560630,"temperature":18.6,"humidity":54.2},{"id":47,"datetime":1610002460735,"temperature":18.5,"humidity":54.3},{"id":48,"datetime":1610003360830,"temperature":18.5,"humidity":54.3},{"id":49,"datetime":1610004260934,"temperature":18.5,"humidity":54.2},{"id":50,"datetime":1610005161030,"temperature":18.4,"humidity":53.9},{"id":51,"datetime":1610006061130,"temperature":18.3,"humidity":54.1},{"id":52,"datetime":1610006961142,"temperature":18.2,"humidity":54.2},{"id":53,"datetime":1610007861721,"temperature":18.1,"humidity":54.2},{"id":54,"datetime":1610008761333,"temperature":18,"humidity":54.1},{"id":55,"datetime":1610009661432,"temperature":18.1,"humidity":54.3},{"id":56,"datetime":1610010561536,"temperature":18.1,"humidity":54.2},{"id":57,"datetime":1610012361700,"temperature":18.3,"humidity":55.1},{"id":58,"datetime":1610013261800,"temperature":19.5,"humidity":53.4},{"id":59,"datetime":1610014161892,"temperature":20.3,"humidity":52.3},{"id":60,"datetime":1610015061992,"temperature":21,"humidity":51.3},{"id":61,"datetime":1610015962091,"temperature":21.4,"humidity":51.3},{"id":62,"datetime":1610016862190,"temperature":21.8,"humidity":50.8},{"id":63,"datetime":1610017762291,"temperature":22,"humidity":50.8},{"id":64,"datetime":1610018662394,"temperature":22.3,"humidity":50.2},{"id":65,"datetime":1610019562490,"temperature":22.5,"humidity":49.6},{"id":66,"datetime":1610020462590,"temperature":22.4,"humidity":49.1},{"id":67,"datetime":1610021362691,"temperature":22.2,"humidity":49.3},{"id":68,"datetime":1610022262771,"temperature":21.7,"humidity":51.1},{"id":69,"datetime":1610023162870,"temperature":21.8,"humidity":48.9},{"id":70,"datetime":1610024062971,"temperature":22.7,"humidity":46.7},{"id":71,"datetime":1610024963070,"temperature":23.3,"humidity":46.8},{"id":72,"datetime":1610025863175,"temperature":23.6,"humidity":47.6},{"id":73,"datetime":1610026763272,"temperature":23.9,"humidity":46.5}];
 var ctx = document.getElementById('dhtChart').getContext('2d');
 
 parsedData = parseChartData(chartData);
@@ -27,36 +30,48 @@ var dhtChart = new Chart(ctx, {
             borderColor: [
                'rgb(54, 162, 235)'
             ],
-            borderWidth: 1
+            borderWidth: 5,
+            fill: false
         }, {
             label: 'Temperature °C',
+            
             data: parsedData.temperature,
-            backgroundColor: [
-             	'rgb(255, 99, 132)'
-            ],
-            borderColor: [
-               'rgb(255, 99, 132)'
-            ],
-            borderWidth: 5
+            backgroundColor: 'rgb(255, 99, 132)',
+            type: 'bar'
         }]
     },
     options: {
+        title: {
+					display: true,
+					text: 'DHT22 Temperature and Humidity Readings'
+				},
         scales: {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    suggestedMax: 100
+                    suggestedMax: 70
                 }
             }],
             xAxes: [{
                 ticks: {
-                    fontSize: 0
+                    fontSize: 12
                 }
             }]
         }
     }
 });
 
+//Source: https://stackoverflow.com/a/25275808
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear() + " " + strTime;
+}
 
 function parseChartData(chartData){
     let datetimes = [];
@@ -64,7 +79,7 @@ function parseChartData(chartData){
     let temperatures = [];
 
     for (i = 0; i < chartData.length; i++) {
-        datetimes.push(new Date(chartData[i].datetime));
+        datetimes.push(formatDate(new Date(chartData[i].datetime)));
         humidities.push(chartData[i].humidity);
         temperatures.push(chartData[i].temperature);
     }
@@ -72,8 +87,5 @@ function parseChartData(chartData){
     return { datetime : datetimes, humidity : humidities, temperature : temperatures };
 }
 </script>
-
-
 </body>
-
 </html>

@@ -3,7 +3,15 @@
 
 <head>
 	<title>DHT22 Temperature and Humidity <%= filtertype %> Reading</title>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <style>
+        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    </style>
 </head>
 
 <body>
@@ -29,8 +37,11 @@
     <input type="submit" value="Plot All" />
 </form>
 </div>
+<br/>
 
+<div id="jsonData"></div>
 </div>
+
 <script>
 //Source: https://stackoverflow.com/a/25275808
 function formatDate(date) {
@@ -54,12 +65,32 @@ Array.max = function( array ){
     return Math.max.apply( Math, array );
 };
 
+//Source: https://stackoverflow.com/a/7220510
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+
 var chartData = <%- JSON.stringify(chartdata) %>;
 var titleText = "DHT22 Temperature and Humidity <%- filtertype %> Reading";
-//
 var ctx = document.getElementById('dhtChart').getContext('2d');
 
 parsedData = parseChartData(chartData);
+document.getElementById('jsonData').appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(JSON.stringify(parsedData, undefined, 4));
 
 var dhtChart = new Chart(ctx, {
     type: 'line',
@@ -138,7 +169,6 @@ function parseChartData(chartData){
 
     return { datetime : datetimes, humidity : humidities, temperature : temperatures };
 }
-
 </script>
 </body>
 </html>

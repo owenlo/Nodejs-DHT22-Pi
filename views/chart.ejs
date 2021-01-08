@@ -38,8 +38,9 @@
 </form>
 </div>
 <br/>
-
-<div id="jsonData"></div>
+<br/>
+<button onclick="toggleRawJson()">Show/Hide Raw Data</button>
+<div id="rawJsonData"></div>
 </div>
 
 <script>
@@ -85,12 +86,21 @@ function syntaxHighlight(json) {
     });
 }
 
+function toggleRawJson(){
+    if (document.getElementById('rawJsonData').style.visibility === "hidden") {
+        document.getElementById('rawJsonData').style.visibility = "visible";
+    } else {
+        document.getElementById('rawJsonData').style.visibility = "hidden";
+    }
+}
+
 var chartData = <%- JSON.stringify(chartdata) %>;
 var titleText = "DHT22 Temperature and Humidity <%- filtertype %> Reading";
 var ctx = document.getElementById('dhtChart').getContext('2d');
 
 parsedData = parseChartData(chartData);
-document.getElementById('jsonData').appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(JSON.stringify(parsedData, undefined, 4));
+document.getElementById('rawJsonData').appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(JSON.stringify(parsedData, undefined, 4));
+document.getElementById('rawJsonData').style.visibility = "hidden";
 
 var dhtChart = new Chart(ctx, {
     type: 'line',

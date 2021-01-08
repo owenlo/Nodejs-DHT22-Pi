@@ -46,9 +46,7 @@ app.get('/sensor',
                 res.send("No result.");
 
         });
-
         db.close();
-
     });
 
 app.get('/',

@@ -40,7 +40,6 @@ $(document).ready(function() {
         }
       });
 
-    var titleText = "DHT22 Temperature and Humidity <%- filtertype %> Reading";
     var ctx = document.getElementById('dhtChart').getContext('2d');
 
     parsedData = parseChartData(chartData);

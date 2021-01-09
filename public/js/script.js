@@ -78,7 +78,7 @@ $(document).ready(function() {
                     type: 'linear',
                     position: 'left',
                     ticks: {
-                        max: 70,
+                        max: 100,
                         min: 0
                     }
                 }, {

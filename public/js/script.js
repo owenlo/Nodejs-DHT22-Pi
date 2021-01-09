@@ -2,13 +2,13 @@ $(document).ready(function() {
 
     //Source: https://stackoverflow.com/a/25275808
     function formatDate(date) {
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'pm' : 'am';
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
+        let strTime = hours + ':' + minutes + ' ' + ampm;
         return date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear() + " " + strTime;
     }
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
     function syntaxHighlight(json) {
         json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-            var cls = 'number';
+            let cls = 'number';
             if (/^"/.test(match)) {
                 if (/:$/.test(match)) {
                     cls = 'key';
@@ -32,18 +32,9 @@ $(document).ready(function() {
         });
     }
 
-    $("#btnShowHideData").click(function() {
-        if (document.getElementById('rawJsonData').style.visibility === "hidden") {
-            document.getElementById('rawJsonData').style.visibility = "visible";
-        } else {
-            document.getElementById('rawJsonData').style.visibility = "hidden";
-        }
-      });
-
     var ctx = document.getElementById('dhtChart').getContext('2d');
 
-    parsedData = parseChartData(chartData);
-    document.getElementById('rawJsonData').appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(JSON.stringify(parsedData, undefined, 4));
+    var parsedData = parseChartData(chartData);
     document.getElementById('rawJsonData').style.visibility = "hidden";
 
     var dhtChart = new Chart(ctx, {
@@ -132,6 +123,7 @@ $(document).ready(function() {
             }
         }
     });
+    
 
     function parseChartData(chartData) {
         let datetimes = [];
@@ -151,4 +143,15 @@ $(document).ready(function() {
         };
     }
 
+    $("#btnShowHideData").click(function() {
+        if (document.getElementById('rawJsonData').style.visibility === "hidden") {
+            let jsonTextElement = document.createElement('pre');
+            jsonTextElement.setAttribute("id", "jsonTextElement");
+            document.getElementById('rawJsonData').appendChild(jsonTextElement).innerHTML = syntaxHighlight(JSON.stringify(parsedData, undefined, 4));
+            document.getElementById('rawJsonData').style.visibility = "visible";
+        } else {
+            document.getElementById("jsonTextElement").remove();
+            document.getElementById('rawJsonData').style.visibility = "hidden";
+        }
+      });
 });

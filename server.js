@@ -4,11 +4,13 @@ const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
 const dbFile = './sensor.db';
 const app = express();
+const favicon = require('serve-favicon');
 
 app.set("view engine", "ejs"); 
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/js'));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 let db = new sqlite3.Database(dbFile);
 const sql = `CREATE TABLE IF NOT EXISTS readings (

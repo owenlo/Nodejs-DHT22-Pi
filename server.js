@@ -5,11 +5,19 @@ const sqlite3 = require('sqlite3').verbose();
 const dbFile = './sensor.db';
 const app = express();
 const favicon = require('serve-favicon');
-
+const PiCamera = require('pi-camera');
+const myCamera = new PiCamera({
+  mode: 'photo',
+  output: `${ __dirname}/public/images/snap.jpg`,
+  width: 640,
+  height: 480,
+  nopreview: true,
+});
 app.set("view engine", "ejs"); 
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/js'));
+app.use(express.static(__dirname + '/public/images'));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 let db = new sqlite3.Database(dbFile);
@@ -34,6 +42,16 @@ function readSensor() {
             db.close();
         }
     });
+}
+
+function captureWebcam() {
+ myCamera.snap()
+  .then((result) => {
+    // Your picture was captured
+  })
+  .catch((error) => {
+     // Handle your error
+  });
 }
 
 app.get('/',
@@ -64,6 +82,8 @@ app.get('/',
         db.close();
     });
 
+setInterval(captureWebcam, 5000);
 setInterval(readSensor, 900000); //15 mins in ms
 
 app.listen(port);
+

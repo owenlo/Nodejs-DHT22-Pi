@@ -12,9 +12,30 @@
     <script src="script.js"></script>
 </head>
 
+
+<script>
+window.onload = function() {
+    var image = document.getElementById("img");
+
+    function updateImage() {
+        image.src = image.src.split("?")[0] + "?" + new Date().getTime();
+    }
+
+    setInterval(updateImage, 5000);
+}
+</script>
+
 <body>
+<div>
+<center>
+        <div style="width: 600px;"><img id="img" 
+                src="snap.jpg" alt="snap"></div>
+</center>
+</div>
+
+<hr>
 <div id="divChart">
-<canvas id="dhtChart" ></canvas>
+<canvas id="dhtChart" style="width: 600px" ></canvas>
 
 <div class="clsButton">
 <form action="/">
@@ -40,6 +61,7 @@
 <button id="btnShowHideData">Show/Hide Raw Data</button>
 <div id="rawJsonData"></div>
 </div>
+
 </body>
 </html>
 
@@ -47,3 +69,4 @@
     var chartData = <%- JSON.stringify(chartdata) %>;
     var titleText = "DHT22 Temperature and Humidity <%- filtertype %> Reading";
 </script>
+
